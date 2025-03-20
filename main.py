@@ -66,7 +66,7 @@ def main():
     #pickle_file = "/Users/john/Desktop/data/pickle/combined.pickle"  # 你的大表 pickle 文件
     train_pickle_file = "/Users/john/Desktop/data/pickle/combined.pickle"
     test_pickle_file = "/Users/john/Desktop/data/pickle/3GC_test.pickle"
-    sequence_length = 32
+    sequence_length = 64
     batch_size = 32
 
     # 假设 big_df 的特征列有 35 个 (最后两列是 attack & segment_name)
@@ -80,7 +80,7 @@ def main():
     nhead = 4
     dim_feedforward = 128
 
-    learning_rate = 1e-3
+    learning_rate = 5e-4
     num_epochs = 12
 
     # 设备配置
