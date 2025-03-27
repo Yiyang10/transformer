@@ -9,6 +9,7 @@ import pandas as pd
 from torch.utils.data import Dataset, DataLoader, Subset
 import numpy as np
 from focal_loss import FocalLoss
+import wandb
 
 # def get_data_loaders_by_segment(
 #     pickle_path, 
@@ -66,22 +67,37 @@ def main():
     #pickle_file = "/Users/john/Desktop/data/pickle/combined.pickle"  # 你的大表 pickle 文件
     train_pickle_file = "/Users/john/Desktop/data/pickle/combined.pickle"
     test_pickle_file = "/Users/john/Desktop/data/pickle/3GC_test.pickle"
-    sequence_length = 64
-    batch_size = 32
+    wandb.init(
+    project="your_project_name",  # 替换为你的项目名
+    name="transformer-3GC-lowlr",       # 当前 run 的名字
+    config={
+        "sequence_length": 64,
+        "batch_size": 32,
+        "input_dim": 35,
+        "hidden_dim": 64,
+        "num_layers": 2,
+        "dropout": 0.1,
+        "d_model": 64,
+        "nhead": 4,
+        "dim_feedforward": 128,
+        "learning_rate": 5e-4,
+        "num_epochs": 12,
+        "model": "Transformer"
+    }
+    )
+    config = wandb.config
 
-    # 假设 big_df 的特征列有 35 个 (最后两列是 attack & segment_name)
-    input_dim = 35         
-    hidden_dim = 64
-    num_layers = 2
-    dropout = 0.1
-
-    # Transformer 相关
-    d_model = 64
-    nhead = 4
-    dim_feedforward = 128
-
-    learning_rate = 5e-4
-    num_epochs = 12
+    sequence_length = config.sequence_length
+    batch_size = config.batch_size
+    input_dim = config.input_dim
+    hidden_dim = config.hidden_dim
+    num_layers = config.num_layers
+    dropout = config.dropout
+    d_model = config.d_model
+    nhead = config.nhead
+    dim_feedforward = config.dim_feedforward
+    learning_rate = config.learning_rate
+    num_epochs = config.num_epochs
 
     # 设备配置
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
