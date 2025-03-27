@@ -117,16 +117,17 @@ def main():
 
     # ========== 选择并初始化模型 ========== 
     # 例：使用 LSTMModel (batch_size, seq_len, input_dim) -> (batch_size, seq_len, 1)
-    model = LSTMModel(input_dim, hidden_dim, num_layers, dropout).to(device)
+    #model = LSTMModel(input_dim, hidden_dim, num_layers, dropout).to(device)
 
     # 或者：使用 TransformerModel
-    # model = TransformerModel(input_dim, d_model, nhead, num_layers, dim_feedforward, dropout).to(device)
-
+    model = TransformerModel(input_dim, d_model, nhead, num_layers, dim_feedforward, dropout).to(device)
+    wandb.watch(model, log="all", log_freq=100)
     # ========== 定义损失函数和优化器 ========== 
     # 由于逐帧二分类 (0/1)，并且模型输出是 logits(未过 sigmoid)，可用 BCEWithLogitsLoss
     criterion = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     train_model(model, train_loader, test_loader, criterion, optimizer, device, num_epochs)
+    wandb.finish()
     # 使用pos_weights
     # pos_weight_value = torch.tensor([9.0], device=device)  # 设为9.0作初始尝试，也可以调大/调小
     # criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight_value)
