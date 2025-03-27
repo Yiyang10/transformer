@@ -21,7 +21,8 @@ def train_model(model, train_loader, test_loader, criterion, optimizer, device, 
             total_loss += loss.item()
         
         avg_loss = total_loss / len(train_loader)
+        wandb.log({"Train Loss": avg_loss, "epoch": epoch + 1})
         print(f"Epoch [{epoch+1}/{num_epochs}], Train Loss: {avg_loss:.4f}")
         
         # 每个 epoch 结束后评估测试集
-        evaluate_model(model, test_loader, device, threshold, save_csv_path="transformer_outputs.csv")
+        evaluate_model(model, test_loader, device, threshold, save_csv_path="transformer_outputs.csv", epoch=epoch)
