@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from test import evaluate_model  # 调用 test.py 中的评估函数
+import wandb
 
 def train_model(model, train_loader, test_loader, criterion, optimizer, device, num_epochs=12, threshold=0.5):
     for epoch in range(num_epochs):
