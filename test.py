@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import wandb
 from sklearn.metrics import precision_score, recall_score, f1_score
 
 def calc_metrics(labels, preds, threshold=0.5):
@@ -17,7 +18,7 @@ def calc_metrics(labels, preds, threshold=0.5):
     f1 = f1_score(labels_flat, preds_flat, zero_division=0)
     return precision, recall, f1
 
-def evaluate_model(model, test_loader, device, threshold=0.5, save_csv_path=None):
+def evaluate_model(model, test_loader, device, threshold=0.5, save_csv_path=None, epoch=None):
     model.eval()
     from collections import defaultdict
 
@@ -75,7 +76,12 @@ def evaluate_model(model, test_loader, device, threshold=0.5, save_csv_path=None
     recall = recall_score(final_labels, preds_binary, zero_division=0)
     f1 = f1_score(final_labels, preds_binary, zero_division=0)
     print(f"Test Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}\n")
-
+    wandb.log({
+    "Test Precision": precision,
+    "Test Recall": recall,
+    "Test F1": f1,
+    "epoch": epoch + 1 if epoch is not None else None
+    })
     # ======== 若需要保存 CSV ========
     if save_csv_path:
         import pandas as pd
@@ -91,4 +97,5 @@ def evaluate_model(model, test_loader, device, threshold=0.5, save_csv_path=None
             "prediction": preds_binary
         })
         df_result.to_csv(save_csv_path, index=False)
-        print(f"评估结果（含平均后预测）已保存到: {save_csv_path}")
+        print(f"评估结果（含平均后预测）已保存到: {save_csv_path
+    return precision, recall, f1
