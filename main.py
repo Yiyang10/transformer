@@ -111,7 +111,11 @@ def main():
     criterion = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     train_model(model, train_loader, test_loader, criterion, optimizer, device, num_epochs)
-    
+    # 使用pos_weights
+    # pos_weight_value = torch.tensor([9.0], device=device)  # 设为9.0作初始尝试，也可以调大/调小
+    # criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight_value)
+
+    # optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     # # 初始超参可设 alpha=1.0, gamma=2.0 使用focal loss
     # criterion = FocalLoss(alpha=2.0, gamma=2.0, reduction='mean')
     # optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
