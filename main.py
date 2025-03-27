@@ -110,10 +110,12 @@ def main():
     # 由于逐帧二分类 (0/1)，并且模型输出是 logits(未过 sigmoid)，可用 BCEWithLogitsLoss
     criterion = nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
-    # ========== 开始训练 ========== 
     train_model(model, train_loader, test_loader, criterion, optimizer, device, num_epochs)
-
+    
+    # # 初始超参可设 alpha=1.0, gamma=2.0 使用focal loss
+    # criterion = FocalLoss(alpha=2.0, gamma=2.0, reduction='mean')
+    # optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    # train_model(model, train_loader, test_loader, criterion, optimizer, device, num_epochs)
 
 if __name__ == "__main__":
     main()
