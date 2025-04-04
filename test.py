@@ -97,5 +97,5 @@ def evaluate_model(model, test_loader, device, threshold=0.5, save_csv_path=None
             "prediction": preds_binary
         })
         df_result.to_csv(save_csv_path, index=False)
-        print(f"评估结果（含平均后预测）已保存到: {save_csv_path
+        print(f"评估结果（含平均后预测）已保存到: {save_csv_path}")
     return precision, recall, f1
